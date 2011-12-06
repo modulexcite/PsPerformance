@@ -20,9 +20,9 @@ $counters = 	"\Processor(_Total)\% Processor Time",
 		"\ASP.NET Apps v4.0.30319(*)\Requests/Sec",
 		"\ASP.NET Apps v4.0.30319(*)\Viewstate MAC Validation Failure"
 
-$rawData = $counters | Get-Counter
+$rawData = $counters | Get-Counter -MaxSamples 5
 
-$data = $rawData.CounterSamples | Select-Object TimeStamp, Path, Instance, CookedValue, CounterType
+$data = $rawData | ForEach { $_.CounterSamples | Select-Object TimeStamp, Path, Instance, CookedValue, CounterType }
 
 $csvData = $data | ConvertTo-Csv -NoTypeInformation
 
